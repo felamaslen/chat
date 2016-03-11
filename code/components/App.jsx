@@ -12,6 +12,8 @@ import globalReducer from '../reducers/GlobalReducer';
 
 // load other components
 import UserLoginForm from './UserLoginForm.jsx';
+import ChatList from './ChatList.jsx';
+import Chat from './Chat.jsx';
 
 import apiCallEffectHandler from '../effects-handlers/ApiCallEffectHandler';
 
@@ -45,6 +47,15 @@ export default class App extends Component {
     return (
       <main>
         <UserLoginForm dispatcher={this.state.dispatcher}
+          user={this.state.reduction.getIn(['appState', 'app', 'user'])}
+          userLoaded={this.state.reduction.getIn(['appState', 'app', 'userLoaded'])}
+        />
+        <ChatList dispatcher={this.state.dispatcher}
+          list={this.state.reduction.getIn(['appState', 'chatList', 'list'])}
+          user={this.state.reduction.getIn(['appState', 'app', 'user'])}
+        />
+        <Chat dispatcher={this.state.dispatcher}
+          messages={this.state.reduction.getIn(['appState', 'chat', 'messages'])}
           user={this.state.reduction.getIn(['appState', 'app', 'user'])}
         />
       </main>

@@ -5,11 +5,13 @@
 
 import {
   APP_USER_LOGIN_REQUESTED,
+  APP_USER_STATUS_REQUESTED,
   APP_USER_LOGIN_RESPONSE_GIVEN
 } from '../constants/actions';
 
 import {
   requestLogin,
+  requestUserStatus,
   loginResponseHandler
 } from './AppReducer';
 
@@ -17,6 +19,8 @@ export default (reduction, action) => {
   switch (action.type) {
     case APP_USER_LOGIN_REQUESTED:
       return requestLogin(reduction, action.payload);
+    case APP_USER_STATUS_REQUESTED:
+      return requestUserStatus(reduction);
     case APP_USER_LOGIN_RESPONSE_GIVEN:
       return loginResponseHandler(reduction, action.payload);
 

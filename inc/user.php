@@ -27,6 +27,8 @@ function _user_try_login() {
 }
 
 function user_handle_query($query) {
+  global $user;
+
   $option = array_shift($query);
 
   if (!$option) {
@@ -36,8 +38,11 @@ function user_handle_query($query) {
   switch ($option) {
   case 'login':
     _user_try_login();
+  case 'status':
+  
+    $user->print_user_info();
 
-    break;
+    break;    
   default:
     http_quit(400, 'Invalid sub-task given!');
   }
@@ -97,6 +102,23 @@ class User {
     return $this->get_user_info($uid);
   }
 
+  private function set_from_sql_result($result) {
+    $this->uid      = (int)($result->uid);
+    $this->name     = $result->name;
+    $this->username = $result->username;
+  }
+
+  public function print_user_info() {
+    // prints user information for JSON request
+    print json_encode(array(
+      'uid'       => $this->uid,
+      'username'  => $this->username,
+      'name'      => $this->name,
+    ));
+
+    die;
+  }
+
   public function try_login($username, $password, $rememberme) {
     // tries to log in with given credentials
     $user_info = $this->check_username_password($username, $password);
@@ -114,13 +136,7 @@ class User {
       setcookie('password', $user_info->password, time() + REMEMBERME_TIME * 86400, '/');
     }
 
-    print json_encode(array(
-      'uid'       => (int)($user_info->uid),
-      'username'  => $user_info->username,
-      'name'      => $user_info->name,
-    ));
-
-    die;
+    $this->set_from_sql_result($user_info);
   }
 
   public function get_login_status() {
@@ -144,9 +160,7 @@ class User {
 
     if ($result !== FALSE) {
       // we are logged in
-      $this->uid      = $result->uid;
-      $this->name     = $result->name;
-      $this->username = $result->username;
+      $this->set_from_sql_result($result);
     }
   }
 }

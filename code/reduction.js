@@ -11,9 +11,29 @@ import {
 export default new Record({
   appState: fromJS({
     app: {
-      user: null
+      user: null,
+      userLoaded: false
     },
-    messages: []
+    messages: [], // this is for displaying errors / alerts to the user
+    chatList: {
+      list: ['她', '他']
+    },
+    chat: {
+      messages: [
+        {
+          uid: 1,
+          name: 'Some Guy',
+          text: 'Hello?',
+          time: 1198179123
+        },
+        {
+          uid: 2,
+          name: 'Some Girl',
+          text: 'Hey! :)',
+          time: 1198179601
+        }
+      ]
+    }
   }),
   effects: List.of()
 });

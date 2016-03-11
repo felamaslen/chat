@@ -9,14 +9,18 @@ import classNames from 'classnames';
 import PureControllerView from './PureControllerView';
 
 import {
-  keyMap
 } from '../common';
 
 import {
-  userLoginRequested
+  userLoginRequested,
+  userStatusRequested
 } from '../actions/AppActions';
 
 export default class UserLoginForm extends PureControllerView {
+  componentWillMount() {
+    this.dispatchAction(userStatusRequested());
+  }
+
   _formSubmitHandler(event) {
     const username = this.refs.inputUsername.value;
     const password = this.refs.inputPassword.value;
@@ -34,7 +38,7 @@ export default class UserLoginForm extends PureControllerView {
   render() {
     let form = null;
 
-    if (!this.props.user) {
+    if (this.props.userLoaded && !this.props.user) {
       const inputUsernameClass = classNames({
         'input-text':     true,
         'input-username': true
@@ -88,6 +92,7 @@ export default class UserLoginForm extends PureControllerView {
 }
 
 UserLoginForm.propTypes = {
-  user: PropTypes.instanceOf(Map)
+  user:       PropTypes.instanceOf(Map),
+  userLoaded: PropTypes.bool
 };
 

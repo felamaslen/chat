@@ -3,5 +3,5 @@
  * Effect constants are defined here
  */
 
-export const API_LOGIN_REQUEST = 'API_LOGIN_REQUEST';
-
+export const API_LOGIN_REQUEST  = 'API_LOGIN_REQUEST';
+export const API_USER_STATUS    = 'API_USER_STATUS';

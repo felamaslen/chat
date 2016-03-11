@@ -9,7 +9,8 @@ import {
 } from '../config';
 
 import {
-  API_LOGIN_REQUEST
+  API_LOGIN_REQUEST,
+  API_USER_STATUS
 } from '../constants/effects';
 
 import buildMessage from '../MessageBuilder';
@@ -17,6 +18,12 @@ import buildMessage from '../MessageBuilder';
 export const requestLogin = (reduction, info) => {
   return reduction.set('effects', reduction.get('effects').push(
     buildMessage(API_LOGIN_REQUEST, info)
+  ));
+}
+
+export const requestUserStatus = reduction => {
+  return reduction.set('effects', reduction.get('effects').push(
+    buildMessage(API_USER_STATUS, {})
   ));
 }
 
@@ -41,8 +48,6 @@ export const loginResponseHandler = (reduction, response) => {
       }));
     }
   }
-
-  console.debug('new user', user);
 
   return reduction
     .setIn(['appState', 'app', 'user'], user)

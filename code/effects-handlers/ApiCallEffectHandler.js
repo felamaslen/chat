@@ -14,7 +14,8 @@ import {
 } from '../config';
 
 import {
-  API_LOGIN_REQUEST
+  API_LOGIN_REQUEST,
+  API_USER_STATUS
 } from '../constants/effects';
 
 import {
@@ -34,6 +35,16 @@ export default buildEffectHandler({
       password: info.password,
       rememberme: info.rememberme
     })).then(
+      response => dispatcher.dispatch(userLoginResponseGiven(response))
+    ).catch(
+      () => dispatcher.dispatch(userLoginResponseGiven(null))
+    );
+  },
+
+  // this is for the remember me feature
+  [API_USER_STATUS]: (_, dispatcher) => {
+    axios.get('user/status')
+    .then(
       response => dispatcher.dispatch(userLoginResponseGiven(response))
     ).catch(
       () => dispatcher.dispatch(userLoginResponseGiven(null))
