@@ -20,6 +20,5 @@ $db_info = array(
   'database' => 'chat',
 );
 
-/******************************
- * non-configurable constants *
- *****************************/
+define('REMEMBERME_TIME', 30); // days
+

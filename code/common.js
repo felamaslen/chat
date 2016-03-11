@@ -6,7 +6,7 @@
 import {
 } from './config';
 
-import { List } from 'immutable';
+import { fromJS } from 'immutable';
 
 export const urlEncode = _str => {
   let str = _str;
@@ -20,5 +20,9 @@ export const urlEncode = _str => {
     .replace(/\)/g, '%29')
     .replace(/\*/g, '%2A')
     .replace(/%20/g, '+');
+}
+
+export const urlSerialise = obj => {
+  return fromJS(obj).map((item, key) => key + '=' + urlEncode(item)).join('&');
 }
 

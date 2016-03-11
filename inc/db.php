@@ -115,3 +115,6 @@ function db_prefix_tables($sql) {
   return strtr($sql, array('{' => '`', '}' => '`'));
 }
 
+// connect to the database
+db_connect();
+

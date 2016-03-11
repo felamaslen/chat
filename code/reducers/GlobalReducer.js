@@ -4,84 +4,21 @@
  */
 
 import {
-  APP_PAGE_CHANGED,
-  APP_WINDOW_RESIZED,
-  APP_EVENT_HANDLER_STORED,
-  APP_SEARCHED,
-
-  PLAYER_PLAYPAUSE_REQUESTED,
-  PLAYER_EVENT_ENDED,
-  PLAYER_EVENT_TIMEUPDATE,
-
-  BROWSER_LIST_ARTISTS_REQUESTED,
-  BROWSER_LIST_ALBUMS_REQUESTED,
-  BROWSER_ARTIST_LIST_ITEM_SELECTED,
-  BROWSER_TRACK_LIST_ITEM_SELECTED,
-  BROWSER_TRACK_LIST_ITEM_PLAYED,
-  BROWSER_SONGS_LIST_RECEIVED,
-  BROWSER_NEXT_SECTION_SWITCHED_TO,
-  BROWSER_SEARCH_SENT
+  APP_USER_LOGIN_REQUESTED,
+  APP_USER_LOGIN_RESPONSE_GIVEN
 } from '../constants/actions';
 
 import {
-  changePage,
-  handleWindowResize,
-  storeEventHandler,
-  search
+  requestLogin,
+  loginResponseHandler
 } from './AppReducer';
-
-import {
-  playPause,
-  audioEnded,
-  audioTimeUpdate
-} from './PlayerReducer';
-
-import {
-  insertListSongs,
-  requestAndInsertListArtists,
-  requestAndInsertListAlbums,
-  selectArtistListItem,
-  selectTrackListItem,
-  switchToNextSection,
-  playCurrentTrackListItem,
-  sendBrowserSearchRequest,
-  processBrowserSearchResult
-} from './PageBrowserReducer';
 
 export default (reduction, action) => {
   switch (action.type) {
-    case APP_PAGE_CHANGED:
-      return changePage(reduction, action.payload);
-    case APP_WINDOW_RESIZED:
-      return handleWindowResize(reduction);
-    case APP_EVENT_HANDLER_STORED:
-      return storeEventHandler(reduction, action.payload);
-    case APP_SEARCHED:
-      return search(reduction, action.payload);
-
-    case PLAYER_PLAYPAUSE_REQUESTED:
-      return playPause(reduction);
-    case PLAYER_EVENT_ENDED:
-      return audioEnded(reduction);
-    case PLAYER_EVENT_TIMEUPDATE:
-      return audioTimeUpdate(reduction, action.payload);
-
-    case BROWSER_LIST_ARTISTS_REQUESTED:
-      return requestAndInsertListArtists(reduction, action.payload);
-    case BROWSER_LIST_ALBUMS_REQUESTED:
-      return requestAndInsertListAlbums(reduction, action.payload);
-    case BROWSER_ARTIST_LIST_ITEM_SELECTED:
-      return selectArtistListItem(reduction, action.payload);
-    case BROWSER_TRACK_LIST_ITEM_SELECTED:
-      return selectTrackListItem(reduction, action.payload);
-    case BROWSER_TRACK_LIST_ITEM_PLAYED:
-      return playCurrentTrackListItem(reduction);
-    case BROWSER_SONGS_LIST_RECEIVED:
-      return insertListSongs(reduction, action.payload);
-    case BROWSER_NEXT_SECTION_SWITCHED_TO:
-      return switchToNextSection(reduction);
-    case BROWSER_SEARCH_SENT:
-      return sendBrowserSearchRequest(reduction, action.payload);
+    case APP_USER_LOGIN_REQUESTED:
+      return requestLogin(reduction, action.payload);
+    case APP_USER_LOGIN_RESPONSE_GIVEN:
+      return loginResponseHandler(reduction, action.payload);
 
     default:
       return reduction;

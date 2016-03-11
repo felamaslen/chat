@@ -6,17 +6,19 @@
 import buildMessage from '../MessageBuilder';
 
 import {
-  APP_PAGE_CHANGED,
-  APP_WINDOW_RESIZED,
-  APP_EVENT_HANDLER_STORED,
-  APP_SEARCHED
+  APP_USER_LOGIN_REQUESTED,
+  APP_USER_LOGIN_RESPONSE_GIVEN
 } from '../constants/actions';
 
-export const pageChanged = pageIndex => buildMessage(APP_PAGE_CHANGED, pageIndex);
+export const userLoginRequested = (username, password, rememberme) => {
+  return buildMessage(APP_USER_LOGIN_REQUESTED, {
+    username,
+    password,
+    rememberme
+  });
+}
 
-export const windowResized = () => buildMessage(APP_WINDOW_RESIZED, {});
-
-export const eventHandlerStored = handler => buildMessage(APP_EVENT_HANDLER_STORED, handler);
-
-export const searched = searchTerm => buildMessage(APP_SEARCHED, searchTerm);
+export const userLoginResponseGiven = response => {
+  return buildMessage(APP_USER_LOGIN_RESPONSE_GIVEN, response);
+}
 

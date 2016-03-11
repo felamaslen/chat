@@ -6,75 +6,37 @@
 import buildEffectHandler from '../effectHandlerBuilder';
 
 import {
-  urlEncode
+  urlSerialise
 } from '../common';
 
 import {
-  API_LIST_ARTISTS,
-  API_LIST_ALBUMS,
-  API_BROWSER_LIST_TRACKS,
-  API_BROWSER_SEARCH
+  apiBaseUrl
+} from '../config';
+
+import {
+  API_LOGIN_REQUEST
 } from '../constants/effects';
 
 import {
-  listArtistsRequested,
-  listAlbumsRequested,
-  listSongsReceived,
-  searchSent
-} from '../actions/PageBrowserActions';
+  userLoginResponseGiven
+} from '../actions/AppActions';
 
 import axios from 'axios';
 
+// set axios defaults
+axios.defaults.baseURL = apiBaseUrl;
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+
 export default buildEffectHandler({
-  [API_LIST_ARTISTS]: (_, dispatcher) => {
-    axios.get('/api/list/artists').then(
-      response => dispatcher.dispatch(listArtistsRequested({ response: response }))
+  [API_LOGIN_REQUEST]: (info, dispatcher) => {
+    axios.post('user/login', urlSerialise({
+      username: info.username,
+      password: info.password,
+      rememberme: info.rememberme
+    })).then(
+      response => dispatcher.dispatch(userLoginResponseGiven(response))
     ).catch(
-      () => dispatcher.dispatch(listArtistsRequested({ response: null }))
+      () => dispatcher.dispatch(userLoginResponseGiven(null))
     );
-  },
-
-  [API_LIST_ALBUMS]: (artist, dispatcher) => {
-    axios.get('/api/list/artist_albums/'
-              + urlEncode(artist)
-    ).then(
-      response => dispatcher.dispatch(listAlbumsRequested({
-        artist: artist,
-        response: response
-      }))
-    ).catch(
-      () => dispatcher.dispatch(listAlbumsRequested({
-        artist: artist,
-        response: null
-      }))
-    );
-  },
-
-  [API_BROWSER_LIST_TRACKS]: (params, dispatcher) => {
-    axios.get('/api/list/songs/artists/'
-              + urlEncode(params.artist) + '/'
-              + urlEncode(params.album)
-    ).then(
-      response => dispatcher.dispatch(listSongsReceived({
-        artist: params.artist,
-        album: params.album,
-        response: response
-      }))
-    ).catch(
-      () => dispatcher.dispatch(listSongsReceived(null))
-    );
-  },
-
-  [API_BROWSER_SEARCH]: (params, dispatcher) => {
-    if (params.searchTerm.length > 0) {
-      axios.get('/api/search/item/'
-                + urlEncode(params.searchTerm) + '/'
-                + params.index
-      ).then(
-        response => dispatcher.dispatch(searchSent({ response }))
-      ).catch(
-        () => dispatcher.dispatch(searchSent({ response: null }))
-      );
-    }
   }
 });

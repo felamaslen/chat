@@ -1,5 +1,5 @@
 /**
- * @file app/components/App.jsx
+ * @file code/components/App.jsx
  * Builds the main application by running the actions (via globalReducer)
  * and loading other components
  */
@@ -11,7 +11,7 @@ import { Dispatcher } from 'flux';
 import globalReducer from '../reducers/GlobalReducer';
 
 // load other components
-import PageHandler from './PageHandler.jsx';
+import UserLoginForm from './UserLoginForm.jsx';
 
 import apiCallEffectHandler from '../effects-handlers/ApiCallEffectHandler';
 
@@ -44,15 +44,9 @@ export default class App extends Component {
   render() {
     return (
       <main>
-        <div id="page-handler-outer">
-          <PageHandler dispatcher={this.state.dispatcher}
-            events={this.state.reduction.getIn(['appState', 'eventHandlers'])}
-            page={this.state.reduction.getIn(['appState', 'app', 'page'])}
-            player={this.state.reduction.getIn(['appState', 'player'])}
-            browser={this.state.reduction.getIn(['appState', 'browser'])}
-            searchTerm={this.state.reduction.getIn(['appState', 'app', 'searchTerm'])}
-          />
-        </div>
+        <UserLoginForm dispatcher={this.state.dispatcher}
+          user={this.state.reduction.getIn(['appState', 'app', 'user'])}
+        />
       </main>
     );
   }

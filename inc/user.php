@@ -2,9 +2,46 @@
 
 /**
  * @file inc/user.php
+ * @depends inc/config.php
  * @depends inc/misc.php
  * @depends inc/db.php
  */
+
+function _user_try_login() {
+  // try to log in the user with the specified credentials
+  global $user;
+  
+  if (!isset($_POST['username']) || !strlen($_POST['username'])) {
+    http_quit(400, 'Must provide username');
+  }
+  $username = $_POST['username'];
+
+  if (!isset($_POST['password']) || !strlen($_POST['password'])) {
+    http_quit(400, 'Must provide password');
+  }
+  $password = $_POST['password'];
+
+  $rememberme = isset($_POST['rememberme']) && $_POST['rememberme'] == 'true';
+
+  $user->try_login($username, $password, $rememberme);
+}
+
+function user_handle_query($query) {
+  $option = array_shift($query);
+
+  if (!$option) {
+    http_quit(400, 'No sub-task given!');
+  }
+
+  switch ($option) {
+  case 'login':
+    _user_try_login();
+
+    break;
+  default:
+    http_quit(400, 'Invalid sub-task given!');
+  }
+}
 
 class User {
   public function __construct() {
@@ -13,26 +50,9 @@ class User {
     $this->username = NULL;
   }
 
-  private function make_salt() {
-    // returns a new salt (random 6 letter alphanumeric string)
-    $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-
-    $num_chars = strlen($chars);
-
-    $salt = '';
-
-    $salt_length = 6;
-
-    for ($i = 0; $i < $salt_length; $i++) {
-      $salt .= substr($chars, mt_rand(0, $num_chars - 1), 1);
-    }
-
-    return $salt;
-  }
-
   private function get_user_info($uid) {
     $info_query = db_query('
-      SELECT {uid}, {name}, {username}
+      SELECT {uid}, {name}, {username}, {password}
       FROM {users}
       WHERE {uid} = %d
     ', $uid) or http_error(500, 'Database error getting user information');
@@ -42,7 +62,7 @@ class User {
     return $info;
   }
 
-  private function check_username_password($username, $password) {
+  private function check_username_password($username, $password, $check_cookie = FALSE) {
     // checks user against the database, if it matches then
     // we return the user info for that user
     // otherwise we return false
@@ -65,7 +85,9 @@ class User {
     $uid  = (int)$user_info->uid;
     $hash = $user_info->password;
 
-    $good_login = password_verify($password, $hash);
+    $good_login = $check_cookie
+      ? $password === $hash                 // "rememberme" cookie stores password hash
+      : password_verify($password, $hash);  // otherwise we check an actual password
 
     if (!$good_login) {
       // password is wrong
@@ -73,6 +95,32 @@ class User {
     }
 
     return $this->get_user_info($uid);
+  }
+
+  public function try_login($username, $password, $rememberme) {
+    // tries to log in with given credentials
+    $user_info = $this->check_username_password($username, $password);
+
+    if ($user_info === FALSE) {
+      // bad login attempt
+      print 'bad_login';
+      die;
+    }
+
+    $_SESSION['uid'] = (int)($user_info->uid);
+
+    if ($rememberme) {
+      setcookie('username', $user_info->username, time() + REMEMBERME_TIME * 86400, '/');
+      setcookie('password', $user_info->password, time() + REMEMBERME_TIME * 86400, '/');
+    }
+
+    print json_encode(array(
+      'uid'       => (int)($user_info->uid),
+      'username'  => $user_info->username,
+      'name'      => $user_info->name,
+    ));
+
+    die;
   }
 
   public function get_login_status() {
@@ -84,10 +132,13 @@ class User {
       $result = $this->get_user_info($_SESSION['uid']);
     }
 
-    if (!$result && isset($_COOKIE) && isset($_COOKIE['username']) && isset($_COOKIE['password'])) {
+    if (!$result && isset($_COOKIE)
+      && isset($_COOKIE['username']) && isset($_COOKIE['password'])
+    ) {
       $result = $this->check_username_password(
         $_COOKIE['username'],
-        $_COOKIE['password']
+        $_COOKIE['password'],
+        TRUE
       );
     }
 
@@ -99,3 +150,13 @@ class User {
     }
   }
 }
+
+// check that we are logged in
+if (!isset($_SESSION)) {
+  session_start();
+}
+
+$user = new User;
+$user->get_login_status();
+
+
