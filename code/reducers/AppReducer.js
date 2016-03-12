@@ -52,5 +52,17 @@ export const loginResponseHandler = (reduction, response) => {
   return reduction
     .setIn(['appState', 'app', 'user'], user)
     .setIn(['appState', 'messages'], messages)
+    .setIn(['appState', 'app', 'loadedUser'], true)
   ;
 }
+
+export const hideLoadingSpinner = reduction => {
+  console.debug('hideLoadingSpinner');
+  return reduction.setIn(['appState', 'app', 'loadingApp'], 1);
+}
+
+export const removeLoadingSpinner = reduction => {
+  console.debug('removeLoadingSpinner');
+  return reduction.setIn(['appState', 'app', 'loadingApp'], 0);
+}
+

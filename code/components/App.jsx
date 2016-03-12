@@ -11,6 +11,7 @@ import { Dispatcher } from 'flux';
 import globalReducer from '../reducers/GlobalReducer';
 
 // load other components
+import LoadingSpinner from './LoadingSpinner.jsx';
 import UserLoginForm from './UserLoginForm.jsx';
 import ChatList from './ChatList.jsx';
 import Chat from './Chat.jsx';
@@ -46,9 +47,13 @@ export default class App extends Component {
   render() {
     return (
       <main>
+        <LoadingSpinner dispatcher={this.state.dispatcher}
+          loadedUser={this.state.reduction.getIn(['appState', 'app', 'loadedUser'])}
+          loadingApp={this.state.reduction.getIn(['appState', 'app', 'loadingApp'])}
+        />
         <UserLoginForm dispatcher={this.state.dispatcher}
           user={this.state.reduction.getIn(['appState', 'app', 'user'])}
-          userLoaded={this.state.reduction.getIn(['appState', 'app', 'userLoaded'])}
+          loadedUser={this.state.reduction.getIn(['appState', 'app', 'loadedUser'])}
         />
         <ChatList dispatcher={this.state.dispatcher}
           list={this.state.reduction.getIn(['appState', 'chatList', 'list'])}

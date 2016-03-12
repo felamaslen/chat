@@ -12,7 +12,8 @@ export default new Record({
   appState: fromJS({
     app: {
       user: null,
-      userLoaded: false
+      loadedUser: false,
+      loadingApp: 2
     },
     messages: [], // this is for displaying errors / alerts to the user
     chatList: {

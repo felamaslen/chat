@@ -38,7 +38,7 @@ export default class UserLoginForm extends PureControllerView {
   render() {
     let form = null;
 
-    if (this.props.userLoaded && !this.props.user) {
+    if (this.props.loadedUser && !this.props.user) {
       const inputUsernameClass = classNames({
         'input-text':     true,
         'input-username': true
@@ -92,7 +92,7 @@ export default class UserLoginForm extends PureControllerView {
 }
 
 UserLoginForm.propTypes = {
-  user:       PropTypes.instanceOf(Map),
-  userLoaded: PropTypes.bool
+  loadedUser: PropTypes.bool,
+  user:       PropTypes.instanceOf(Map)
 };
 
