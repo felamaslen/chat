@@ -27,11 +27,13 @@ export default class LoadingSpinner extends PureControllerView {
     const appWasLoading = this.props.loadingApp === 2;
 
     if (appIsLoaded && appWasLoading) {
-      this.dispatchNext(appLoadingSpinnerHidden());
-
       window.setTimeout(() => {
-        this.dispatchAction(appLoaded());
-      }, loadingSpinnerFadeTime);
+        this.dispatchAction(appLoadingSpinnerHidden());
+
+        window.setTimeout(() => {
+          this.dispatchAction(appLoaded());
+        }, loadingSpinnerFadeTime);
+      }, 500);
     }
   }
 
@@ -45,7 +47,9 @@ export default class LoadingSpinner extends PureControllerView {
 
       spinner = (
         <div className={loadingClasses} id="loading-outer">
-          <div id="loading-inner">Loading...</div>
+          <div id="loading-inner">
+            <div className="loader">Loading...</div>
+          </div>
         </div>
       );
     }

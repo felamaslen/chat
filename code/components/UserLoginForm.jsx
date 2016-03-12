@@ -70,14 +70,18 @@ export default class UserLoginForm extends PureControllerView {
                 <tr>
                   <td></td>
                   <td>
-                    <input ref="inputRememberMe" type="checkbox" className={inputRememberMeClass}/>
-                    Remember me
+                    <div className="input-checkbox-outer">
+                      <input ref="inputRememberMe" type="checkbox" className={inputRememberMeClass}
+                        id="input-remember-me"/>
+                      <label htmlFor="input-remember-me"/>
+                      Remember me
+                    </div>
                   </td>
                 </tr>
                 <tr>
                   <td></td>
                   <td>
-                    <input type="submit" value="Log in"/>
+                    <input className="button button-login" type="submit" value="Log in"/>
                   </td>
                 </tr>
               </tbody>

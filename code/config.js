@@ -5,5 +5,5 @@
 
 export const apiBaseUrl = '/api/';
 
-export const loadingSpinnerFadeTime = 1000;
+export const loadingSpinnerFadeTime = 550;
 
