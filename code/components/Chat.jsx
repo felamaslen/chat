@@ -24,14 +24,16 @@ export default class Chat extends PureControllerView {
       const messages = this.props.messages.map((item, key) => {
         const listItemClass = classNames({
           'chat-message': true,
-          'mine':         item.get('uid') === this.props.user.uid
+          'mine':         item.get('uid') === this.props.user.get('uid')
         });
 
         return (
           <li className={listItemClass} key={key}>
-            <span className="name">{item.get('name')}</span>
-            <span className="time">{getDateFromTime(item.get('time'))}</span>
-            <span className="text">{item.get('text')}</span>
+            <div className="chat-message-blob">
+              <span className="name">{item.get('name')}</span>
+              <span className="time">{getDateFromTime(item.get('time'))}</span>
+              <span className="text">{item.get('text')}</span>
+            </div>
           </li>
         );
       });

@@ -24,13 +24,12 @@ export default class AdminBar extends PureControllerView {
 
     if (this.props.user) {
       const adminBarClass = classNames({
-        'admin-bar':        true,
-        'admin-bar-admin':  this.props.user.admin
+        'admin-bar-admin':  this.props.user.get('admin')
       });
 
       form = (
-        <div className={adminBarClass}>
-          <button onClick={this._logout.bind(this)}>Log out</button>
+        <div id="admin-bar" className={adminBarClass}>
+          <button className="button" onClick={this._logout.bind(this)}>Log out</button>
         </div>
       );
     }
