@@ -57,35 +57,23 @@ export default class UserLoginForm extends PureControllerView {
       form = (
         <div id="login-form-outer">
           <form onSubmit={this._formSubmitHandler.bind(this)}>
-            <table>
-              <tbody>
-                <tr>
-                  <th>Username:</th>
-                  <td><input ref="inputUsername" type="text" className={inputUsernameClass}/></td>
-                </tr>
-                <tr>
-                  <th>Password:</th>
-                  <td><input ref="inputPassword" type="password" className={inputPasswordClass}/></td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td>
-                    <div className="input-checkbox-outer">
-                      <input ref="inputRememberMe" type="checkbox" className={inputRememberMeClass}
-                        id="input-remember-me"/>
-                      <label htmlFor="input-remember-me"/>
-                      Remember me
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td>
-                    <input className="button button-login" type="submit" value="Log in"/>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <div className="input-outer">
+              <span className="input-label">Username</span>
+              <input ref="inputUsername" type="text" className={inputUsernameClass}/>
+            </div>
+            <div className="input-outer">
+              <span className="input-label">Password</span>
+              <input ref="inputPassword" type="password" className={inputPasswordClass}/>
+            </div>
+            <div className="input-outer">
+              <div className="input-checkbox-outer">
+                <input ref="inputRememberMe" type="checkbox" className={inputRememberMeClass}
+                  id="input-remember-me"/>
+                <label htmlFor="input-remember-me"/>
+                Remember me
+              </div>
+              <input className="button button-login" type="submit" value="Log in"/>
+            </div>
           </form>
         </div>
       );

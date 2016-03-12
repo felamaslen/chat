@@ -57,3 +57,11 @@ export const urlSerialise = obj => {
   return fromJS(obj).map((item, key) => key + '=' + urlEncode(item)).join('&');
 }
 
+export const createMessage = (type, title, body) => fromJS({
+  type,
+  title,
+  body,
+  fade: false,
+  timeoutSet: false
+});
+

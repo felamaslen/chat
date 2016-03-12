@@ -7,3 +7,6 @@ export const apiBaseUrl = '/api/';
 
 export const loadingSpinnerFadeTime = 550;
 
+export const messageTimeout = 3000;
+export const messageFadeTime = 550;
+

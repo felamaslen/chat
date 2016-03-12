@@ -4,9 +4,6 @@ body {
   font-family: Ubuntu, sans-serif;
 }
 
-@keyframes angle-anim {
-}
-
 #loading-outer {
   z-index: 100;
   position: fixed;
@@ -82,6 +79,45 @@ body {
   }
 }
 
+#messages {
+  margin: 0;
+  padding: 0;
+  position: fixed;
+  z-index: 99;
+  top: 0;
+  width: 100%;
+}
+#messages .message {
+  display: block;
+  margin: .4em auto;
+  padding: .3em .5em;
+  color: #000;
+  list-style: none;
+  width: 20%;
+  min-width: 300px;
+  cursor: pointer;
+  transition: opacity ease-in-out .5s;
+}
+#messages .message.fade {
+  opacity: 0;
+}
+#messages .message-error {
+  background-color: #faa;
+}
+#messages .message-warn {
+  background-color: #ffa;
+}
+#messages .message-success {
+  background-color: #afa;
+}
+#messages .message-title {
+  text-align: center;
+}
+#messages .message-body {
+  font-size: .89em;
+  color: #444;
+}
+
 #login-form-outer {
   width: 360px;
   height: 240px;
@@ -91,12 +127,21 @@ body {
   margin-left: -180px;
   margin-top: -120px;
 }
+#login-form-outer .input-label {
+  width: 80px;
+}
 
 .input-text {
-  font-size: 1.5em;
+  font-size: 1.2em;
+  line-height: 1.5em;
+  padding: 0 .2em;
+  outline: none;
   border: 1px solid #999;
   border-radius: .2em;
   margin: .1em 0;
+}
+.input-label {
+  display: inline-block;
 }
 
 .input-checkbox-outer {

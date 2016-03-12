@@ -8,15 +8,21 @@ import classNames from 'classnames';
 import PureControllerView from './PureControllerView';
 
 import {
-} from '../common';
+  messageTimeout,
+  messageFadeTime
+} from '../config';
 
 import {
-  messageDismissed
+  messageDismissed,
+  messageRemoved
 } from '../actions/AppActions';
 
 export default class Messages extends PureControllerView {
   _dismiss(key) {
     this.dispatchAction(messageDismissed(key));
+    window.setTimeout(() => {
+      this.dispatchAction(messageRemoved(key));
+    }, messageFadeTime);
   }
 
   render() {
@@ -25,8 +31,25 @@ export default class Messages extends PureControllerView {
         const messageClass = classNames({
           message:          true,
           'message-warn':   item.get('type') == 'warn',
-          'message-error':  item.get('type') == 'error'
+          'message-error':  item.get('type') == 'error',
+          fade:             item.get('fade')
         });
+
+        if (!item.get('timeoutSet')) {
+          window.setTimeout(() => {
+            this.dispatchAction(messageDismissed(key));
+
+            window.setTimeout(() => {
+              this.dispatchAction(messageRemoved(key));
+            }, messageFadeTime);
+          }, messageTimeout);
+        }
+
+        const body = item.get('body') && typeof item.get('body') == 'object' ? (
+          <ul>{item.get('body').map((item, key) => (
+            <li key={'msg-list-' + key}>{item}</li>
+          ))}</ul>
+        ) : item.get('body');
 
         return (
           <li key={key} onClick={this._dismiss.bind(this, key)} className={messageClass}>
@@ -34,7 +57,7 @@ export default class Messages extends PureControllerView {
               {item.get('title')}
             </div>
             <div className="message-body">
-              {item.get('body')}
+              {body}
             </div>
           </li>
         );

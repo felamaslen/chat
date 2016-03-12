@@ -3,10 +3,11 @@
  * Top level reducers
  */
 
-import { fromJS } from 'immutable';
+import { List, fromJS } from 'immutable';
 
 import {
-} from '../config';
+  createMessage
+} from '../common';
 
 import {
   API_LOGIN_REQUEST,
@@ -17,9 +18,28 @@ import {
 import buildMessage from '../MessageBuilder';
 
 export const requestLogin = (reduction, info) => {
-  return reduction.set('effects', reduction.get('effects').push(
-    buildMessage(API_LOGIN_REQUEST, info)
-  ));
+  let effects = reduction.get('effects');
+  let messages = reduction.getIn(['appState', 'app', 'messages']);
+
+  let badInfo = List.of();
+
+  if (info.username.length == 0) {
+    badInfo = badInfo.push('Must provide a username');
+  }
+  if (info.password.length == 0) {
+    badInfo = badInfo.push('Must provide a password');
+  }
+
+  if (badInfo.size > 0) {
+    messages = messages.push(createMessage(
+      'warn', 'Please review the following:', badInfo
+    ));
+  }
+  else {
+    effects = effects.push(buildMessage(API_LOGIN_REQUEST, info));
+  }
+
+  return reduction.set('effects', effects).setIn(['appState', 'app', 'messages'], messages);
 }
 
 export const requestLogout = reduction => {
@@ -50,11 +70,7 @@ export const loginResponseHandler = (reduction, response) => {
       user = fromJS(response.data);
     }
     else if (loadedUser) {
-      messages = messages.push(fromJS({
-        type:   'error',
-        title:  'Bad username and/or password',
-        body:   null
-      }));
+      messages = messages.push(createMessage('error', 'Bad username and/or password', null));
     }
   }
 
@@ -74,6 +90,19 @@ export const removeLoadingSpinner = reduction => {
 }
 
 export const dismissMessage = (reduction, key) => {
+  let messages = reduction.getIn(['appState', 'app', 'messages']);
+  let message = messages.get(key);
+
+  if (!!message) {
+    message = message.set('fade', true).set('timeoutSet', true);
+
+    messages = messages.set(key, message);
+  }
+
+  return reduction.setIn(['appState', 'app', 'messages'], messages);
+}
+
+export const removeMessage = (reduction, key) => {
   const messages = reduction.getIn(['appState', 'app', 'messages']).set(key, null);
 
   return reduction.setIn(['appState', 'app', 'messages'], messages);
