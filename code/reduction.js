@@ -13,9 +13,9 @@ export default new Record({
     app: {
       user: null,
       loadedUser: false,
-      loadingApp: 2
+      loadingApp: 2,
+      messages: [] // this is for displaying errors / alerts to the user
     },
-    messages: [], // this is for displaying errors / alerts to the user
     chatList: {
       list: ['她', '他']
     },

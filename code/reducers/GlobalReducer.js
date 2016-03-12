@@ -9,7 +9,8 @@ import {
   APP_USER_STATUS_REQUESTED,
   APP_USER_LOGIN_RESPONSE_GIVEN,
   APP_LOADING_SPINNER_HIDDEN,
-  APP_LOADED
+  APP_LOADED,
+  APP_MESSAGE_DISMISSED
 } from '../constants/actions';
 
 import {
@@ -18,7 +19,8 @@ import {
   requestUserStatus,
   loginResponseHandler,
   hideLoadingSpinner,
-  removeLoadingSpinner
+  removeLoadingSpinner,
+  dismissMessage
 } from './AppReducer';
 
 export default (reduction, action) => {
@@ -35,6 +37,9 @@ export default (reduction, action) => {
       return hideLoadingSpinner(reduction);
     case APP_LOADED:
       return removeLoadingSpinner(reduction);
+    case APP_MESSAGE_DISMISSED:
+      return dismissMessage(reduction, action.payload);
+
     default:
       return reduction;
   }

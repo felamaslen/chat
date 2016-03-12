@@ -131,8 +131,8 @@ class User {
   public function logout() {
     session_unset();
 
-    setcookie('username', '', time() - 86400);
-    setcookie('password', '', time() - 86400);
+    setcookie('username', '', time() - 86400, '/');
+    setcookie('password', '', time() - 86400, '/');
 
     print 'logged_out';
     die;

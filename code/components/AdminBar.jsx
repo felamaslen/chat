@@ -40,6 +40,6 @@ export default class AdminBar extends PureControllerView {
 }
 
 AdminBar.propTypes = {
-  user:       PropTypes.instanceOf(Map)
+  user: PropTypes.instanceOf(Map)
 };
 

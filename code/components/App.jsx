@@ -15,6 +15,7 @@ import AdminBar from './AdminBar.jsx';
 import Chat from './Chat.jsx';
 import ChatList from './ChatList.jsx';
 import LoadingSpinner from './LoadingSpinner.jsx';
+import Messages from './Messages.jsx';
 import UserLoginForm from './UserLoginForm.jsx';
 
 import apiCallEffectHandler from '../effects-handlers/ApiCallEffectHandler';
@@ -48,6 +49,9 @@ export default class App extends Component {
   render() {
     return (
       <main>
+        <Messages dispatcher={this.state.dispatcher}
+          messages={this.state.reduction.getIn(['appState', 'app', 'messages'])}
+        />
         <LoadingSpinner dispatcher={this.state.dispatcher}
           loadedUser={this.state.reduction.getIn(['appState', 'app', 'loadedUser'])}
           loadingApp={this.state.reduction.getIn(['appState', 'app', 'loadingApp'])}

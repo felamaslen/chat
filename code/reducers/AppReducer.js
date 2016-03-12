@@ -37,29 +37,30 @@ export const requestUserStatus = reduction => {
 export const loginResponseHandler = (reduction, response) => {
   let user = null;
 
-  let messages = reduction.getIn(['appState', 'messages']);
+  let messages = reduction.getIn(['appState', 'app', 'messages']);
 
   const badResponse = !response || response.status !== 200 || !response.data
     || typeof response.data !== 'object';
 
   if (!badResponse) {
-    const badLogin = !response.data.uid;
+    const loggedIn = !!response.data.uid;
+    const loadedUser = reduction.getIn(['appState', 'app', 'loadedUser']);
 
-    if (badLogin) {
+    if (loggedIn) {
+      user = fromJS(response.data);
+    }
+    else if (loadedUser) {
       messages = messages.push(fromJS({
         type:   'error',
         title:  'Bad username and/or password',
         body:   null
       }));
     }
-    else {
-      user = fromJS(response.data);
-    }
   }
 
   return reduction
     .setIn(['appState', 'app', 'user'], user)
-    .setIn(['appState', 'messages'], messages)
+    .setIn(['appState', 'app', 'messages'], messages)
     .setIn(['appState', 'app', 'loadedUser'], true)
   ;
 }
@@ -70,5 +71,11 @@ export const hideLoadingSpinner = reduction => {
 
 export const removeLoadingSpinner = reduction => {
   return reduction.setIn(['appState', 'app', 'loadingApp'], 0);
+}
+
+export const dismissMessage = (reduction, key) => {
+  const messages = reduction.getIn(['appState', 'app', 'messages']).set(key, null);
+
+  return reduction.setIn(['appState', 'app', 'messages'], messages);
 }
 
