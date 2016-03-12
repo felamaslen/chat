@@ -8,8 +8,8 @@ import classNames from 'classnames';
 import PureControllerView from './PureControllerView';
 
 import {
-  messageTimeout,
-  messageFadeTime
+  MESSAGE_TIMEOUT,
+  MESSAGE_FADE_TIME
 } from '../config';
 
 import {
@@ -22,7 +22,7 @@ export default class Messages extends PureControllerView {
     this.dispatchAction(messageDismissed(key));
     window.setTimeout(() => {
       this.dispatchAction(messageRemoved(key));
-    }, messageFadeTime);
+    }, MESSAGE_FADE_TIME);
   }
 
   render() {
@@ -41,8 +41,8 @@ export default class Messages extends PureControllerView {
 
             window.setTimeout(() => {
               this.dispatchAction(messageRemoved(key));
-            }, messageFadeTime);
-          }, messageTimeout);
+            }, MESSAGE_FADE_TIME);
+          }, MESSAGE_TIMEOUT);
         }
 
         const body = item.get('body') && typeof item.get('body') == 'object' ? (

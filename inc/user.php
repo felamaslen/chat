@@ -58,11 +58,12 @@ class User {
     $this->admin    = NULL;
     $this->name     = NULL;
     $this->username = NULL;
+    $this->picture  = NULL;
   }
 
   private function get_user_info($uid) {
     $info_query = db_query('
-      SELECT {uid}, {admin}, {name}, {username}, {password}
+      SELECT {uid}, {admin}, {name}, {username}, {password}, {picture}
       FROM {users}
       WHERE {uid} = %d
     ', $uid) or http_error(500, 'Database error getting user information');
@@ -113,6 +114,7 @@ class User {
       $this->admin    = $result->admin > 0;
       $this->name     = $result->name;
       $this->username = $result->username;
+      $this->picture  = $result->picture;
     }
   }
 
@@ -121,8 +123,9 @@ class User {
     print json_encode(array(
       'uid'       => $this->uid,
       'admin'     => $this->admin,
-      'username'  => $this->username,
       'name'      => $this->name,
+      'username'  => $this->username,
+      'picture'   => $this->picture,
     ));
 
     die;

@@ -9,7 +9,8 @@ import classNames from 'classnames';
 import PureControllerView from './PureControllerView';
 
 import {
-} from '../common';
+  DEFAULT_USER_PICTURE
+} from '../config';
 
 import {
   chatListRequested
@@ -25,8 +26,17 @@ export default class ChatList extends PureControllerView {
     let chatList = null;
 
     const list = this.props.list.map((item, key) => {
+      const pictureSrc = item.get('picture') || DEFAULT_USER_PICTURE;
+
+      const picture = (
+        <span className="chat-list-user-picture">
+          <img src={pictureSrc}/>
+        </span>
+      );
+
       return (
         <li className="chat-list-item" key={key}>
+          {picture}
           <span className="chat-list-item-name">
             {item.get('name')}
           </span>

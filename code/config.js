@@ -3,10 +3,11 @@
  * Defines global configuration variables
  */
 
-export const apiBaseUrl = '/api/';
+export const API_BASE_URL = '/api/';
 
-export const loadingSpinnerFadeTime = 550;
+export const SPINNER_FADE_TIME = 550;
 
-export const messageTimeout = 3000;
-export const messageFadeTime = 550;
+export const MESSAGE_TIMEOUT = 3000;
+export const MESSAGE_FADE_TIME = 550;
 
+export const DEFAULT_USER_PICTURE = '/img/default_user_picture.png';

@@ -291,6 +291,21 @@ body {
 .chat-list-item {
   display: block;
   height: 64px;
+  line-height: 64px;
+  font-size: 1.3em;
+  cursor: pointer;
+}
+.chat-list-user-picture {
+  width: 52px;
+  height: 52px;
+  margin: 6px;
+  border-radius: 100%;
+  overflow: hidden;
+  float: left;
+}
+.chat-list-user-picture img {
+  width: 52px;
+  height: auto;
 }
 
 #chat-outer {

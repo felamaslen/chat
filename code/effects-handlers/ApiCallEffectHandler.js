@@ -10,7 +10,7 @@ import {
 } from '../common';
 
 import {
-  apiBaseUrl
+  API_BASE_URL
 } from '../config';
 
 import {
@@ -31,7 +31,7 @@ import {
 import axios from 'axios';
 
 // set axios defaults
-axios.defaults.baseURL = apiBaseUrl;
+axios.defaults.baseURL = API_BASE_URL;
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
 export default buildEffectHandler({

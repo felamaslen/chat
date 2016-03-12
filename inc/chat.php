@@ -7,10 +7,10 @@
 
 function _chat_list_all_chats($uid) {
   $query = db_query('
-    SELECT {uid}, {name}, {chats1}.{nick2}, {chats2}.{nick1}
+    SELECT {uid}, {name}, {picture}, {chats1}.{nick2}, {chats2}.{nick1}
     FROM {users}
-    LEFT JOIN {chats} AS {chats1} ON {chats1}.{uid1} = %d
-    LEFT JOIN {chats} AS {chats2} ON {chats2}.{uid2} = %d
+    LEFT JOIN {chats} AS {chats1} ON ({chats1}.{uid1} = %d AND {chats1}.{uid2} = {uid})
+    LEFT JOIN {chats} AS {chats2} ON ({chats2}.{uid2} = %d AND {chats2}.{uid1} = {uid})
     WHERE {uid} != %d
   ', $uid, $uid, $uid);
 
@@ -27,8 +27,9 @@ function _chat_list_all_chats($uid) {
     }
 
     $users[] = array(
-      'uid'   => (int)($row->uid),
-      'name'  => $name,
+      'uid'     => (int)($row->uid),
+      'name'    => $name,
+      'picture' => $row->picture,
     );
   }
 
