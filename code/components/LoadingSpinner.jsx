@@ -26,10 +26,7 @@ export default class LoadingSpinner extends PureControllerView {
 
     const appWasLoading = this.props.loadingApp === 2;
 
-    console.debug('appIsLoaded:', appIsLoaded, 'appWasLoading:', appWasLoading);
-
     if (appIsLoaded && appWasLoading) {
-      console.debug('hiding loading spinner');
       this.dispatchNext(appLoadingSpinnerHidden());
 
       window.setTimeout(() => {

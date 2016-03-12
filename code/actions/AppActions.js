@@ -7,6 +7,7 @@ import buildMessage from '../MessageBuilder';
 
 import {
   APP_USER_LOGIN_REQUESTED,
+  APP_USER_LOGOUT_REQUESTED,
   APP_USER_STATUS_REQUESTED,
   APP_USER_LOGIN_RESPONSE_GIVEN,
   APP_LOADED,
@@ -19,6 +20,10 @@ export const userLoginRequested = (username, password, rememberme) => {
     password,
     rememberme
   });
+}
+
+export const userLogoutRequested = () => {
+  return buildMessage(APP_USER_LOGOUT_REQUESTED, {});
 }
 
 export const userStatusRequested = () => {

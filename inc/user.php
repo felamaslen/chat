@@ -42,7 +42,11 @@ function user_handle_query($query) {
   
     $user->print_user_info();
 
-    break;    
+    break;
+  case 'logout':
+    $user->logout();
+
+    break;
   default:
     http_quit(400, 'Invalid sub-task given!');
   }
@@ -50,14 +54,15 @@ function user_handle_query($query) {
 
 class User {
   public function __construct() {
-    $this->uid = NULL;
-    $this->name = NULL;
+    $this->uid      = NULL;
+    $this->admin    = NULL;
+    $this->name     = NULL;
     $this->username = NULL;
   }
 
   private function get_user_info($uid) {
     $info_query = db_query('
-      SELECT {uid}, {name}, {username}, {password}
+      SELECT {uid}, {admin}, {name}, {username}, {password}
       FROM {users}
       WHERE {uid} = %d
     ', $uid) or http_error(500, 'Database error getting user information');
@@ -103,15 +108,19 @@ class User {
   }
 
   private function set_from_sql_result($result) {
-    $this->uid      = (int)($result->uid);
-    $this->name     = $result->name;
-    $this->username = $result->username;
+    if (!!$result) {
+      $this->uid      = (int)($result->uid);
+      $this->admin    = $result->admin > 0;
+      $this->name     = $result->name;
+      $this->username = $result->username;
+    }
   }
 
   public function print_user_info() {
     // prints user information for JSON request
     print json_encode(array(
       'uid'       => $this->uid,
+      'admin'     => $this->admin,
       'username'  => $this->username,
       'name'      => $this->name,
     ));
@@ -119,24 +128,32 @@ class User {
     die;
   }
 
+  public function logout() {
+    session_unset();
+
+    setcookie('username', '', time() - 86400);
+    setcookie('password', '', time() - 86400);
+
+    print 'logged_out';
+    die;
+  }
+
   public function try_login($username, $password, $rememberme) {
     // tries to log in with given credentials
     $user_info = $this->check_username_password($username, $password);
 
-    if ($user_info === FALSE) {
-      // bad login attempt
-      print 'bad_login';
-      die;
-    }
-
-    $_SESSION['uid'] = (int)($user_info->uid);
-
-    if ($rememberme) {
-      setcookie('username', $user_info->username, time() + REMEMBERME_TIME * 86400, '/');
-      setcookie('password', $user_info->password, time() + REMEMBERME_TIME * 86400, '/');
-    }
-
     $this->set_from_sql_result($user_info);
+
+    if ($this->uid) {
+      // we are logged in!
+
+      $_SESSION['uid'] = (int)($user_info->uid);
+
+      if ($rememberme) {
+        setcookie('username', $user_info->username, time() + REMEMBERME_TIME * 86400, '/');
+        setcookie('password', $user_info->password, time() + REMEMBERME_TIME * 86400, '/');
+      }
+    }
   }
 
   public function get_login_status() {

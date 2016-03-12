@@ -10,6 +10,7 @@ import {
 
 import {
   API_LOGIN_REQUEST,
+  API_LOGOUT_REQUEST,
   API_USER_STATUS
 } from '../constants/effects';
 
@@ -18,6 +19,12 @@ import buildMessage from '../MessageBuilder';
 export const requestLogin = (reduction, info) => {
   return reduction.set('effects', reduction.get('effects').push(
     buildMessage(API_LOGIN_REQUEST, info)
+  ));
+}
+
+export const requestLogout = reduction => {
+  return reduction.set('effects', reduction.get('effects').push(
+    buildMessage(API_LOGOUT_REQUEST, {})
   ));
 }
 
@@ -32,20 +39,21 @@ export const loginResponseHandler = (reduction, response) => {
 
   let messages = reduction.getIn(['appState', 'messages']);
 
-  const badResponse = !response || response.status !== 200 || !response.data;
+  const badResponse = !response || response.status !== 200 || !response.data
+    || typeof response.data !== 'object';
 
   if (!badResponse) {
-    const badLogin = !badResponse && response.data === 'bad_login';
+    const badLogin = !response.data.uid;
 
-    if (!badLogin) {
-      user = fromJS(response.data);
-    }
-    else {
+    if (badLogin) {
       messages = messages.push(fromJS({
         type:   'error',
         title:  'Bad username and/or password',
         body:   null
       }));
+    }
+    else {
+      user = fromJS(response.data);
     }
   }
 
@@ -57,12 +65,10 @@ export const loginResponseHandler = (reduction, response) => {
 }
 
 export const hideLoadingSpinner = reduction => {
-  console.debug('hideLoadingSpinner');
   return reduction.setIn(['appState', 'app', 'loadingApp'], 1);
 }
 
 export const removeLoadingSpinner = reduction => {
-  console.debug('removeLoadingSpinner');
   return reduction.setIn(['appState', 'app', 'loadingApp'], 0);
 }
 

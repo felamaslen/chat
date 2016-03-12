@@ -5,6 +5,7 @@
 
 import {
   APP_USER_LOGIN_REQUESTED,
+  APP_USER_LOGOUT_REQUESTED,
   APP_USER_STATUS_REQUESTED,
   APP_USER_LOGIN_RESPONSE_GIVEN,
   APP_LOADING_SPINNER_HIDDEN,
@@ -13,6 +14,7 @@ import {
 
 import {
   requestLogin,
+  requestLogout,
   requestUserStatus,
   loginResponseHandler,
   hideLoadingSpinner,
@@ -23,6 +25,8 @@ export default (reduction, action) => {
   switch (action.type) {
     case APP_USER_LOGIN_REQUESTED:
       return requestLogin(reduction, action.payload);
+    case APP_USER_LOGOUT_REQUESTED:
+      return requestLogout(reduction);
     case APP_USER_STATUS_REQUESTED:
       return requestUserStatus(reduction);
     case APP_USER_LOGIN_RESPONSE_GIVEN:

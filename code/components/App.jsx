@@ -11,10 +11,11 @@ import { Dispatcher } from 'flux';
 import globalReducer from '../reducers/GlobalReducer';
 
 // load other components
+import AdminBar from './AdminBar.jsx';
+import Chat from './Chat.jsx';
+import ChatList from './ChatList.jsx';
 import LoadingSpinner from './LoadingSpinner.jsx';
 import UserLoginForm from './UserLoginForm.jsx';
-import ChatList from './ChatList.jsx';
-import Chat from './Chat.jsx';
 
 import apiCallEffectHandler from '../effects-handlers/ApiCallEffectHandler';
 
@@ -54,6 +55,9 @@ export default class App extends Component {
         <UserLoginForm dispatcher={this.state.dispatcher}
           user={this.state.reduction.getIn(['appState', 'app', 'user'])}
           loadedUser={this.state.reduction.getIn(['appState', 'app', 'loadedUser'])}
+        />
+        <AdminBar dispatcher={this.state.dispatcher}
+          user={this.state.reduction.getIn(['appState', 'app', 'user'])}
         />
         <ChatList dispatcher={this.state.dispatcher}
           list={this.state.reduction.getIn(['appState', 'chatList', 'list'])}
