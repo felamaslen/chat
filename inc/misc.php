@@ -147,3 +147,6 @@ function progress_bar($done, $total, $size = 30) {
   }
 }
 
+// set proper encoding for browser
+header('Content-Type: application/json; charset=utf-8');
+

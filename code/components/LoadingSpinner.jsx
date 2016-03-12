@@ -9,9 +9,6 @@ import classNames from 'classnames';
 import PureControllerView from './PureControllerView';
 
 import {
-} from '../common';
-
-import {
   loadingSpinnerFadeTime
 } from '../config';
 
@@ -22,7 +19,10 @@ import {
 
 export default class LoadingSpinner extends PureControllerView {
   componentDidUpdate() {
-    const appIsLoaded = this.props.loadedUser;
+    const appIsLoaded =
+      this.props.loadedUser &&
+      this.props.loadedChatList
+    ;
 
     const appWasLoading = this.props.loadingApp === 2;
 
@@ -59,6 +59,7 @@ export default class LoadingSpinner extends PureControllerView {
 }
 
 LoadingSpinner.propTypes = {
+  loadedChatList: PropTypes.bool,
   loadedUser: PropTypes.bool,
   loadingApp: PropTypes.number
 };

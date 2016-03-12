@@ -11,7 +11,10 @@ import {
   APP_LOADING_SPINNER_HIDDEN,
   APP_LOADED,
   APP_MESSAGE_DISMISSED,
-  APP_MESSAGE_REMOVED
+  APP_MESSAGE_REMOVED,
+
+  CHAT_CHAT_LIST_REQUESTED,
+  CHAT_CHAT_LIST_RECEIVED
 } from '../constants/actions';
 
 import {
@@ -24,6 +27,11 @@ import {
   dismissMessage,
   removeMessage
 } from './AppReducer';
+
+import {
+  requestChatList,
+  insertChatList
+} from './ChatReducer';
 
 export default (reduction, action) => {
   switch (action.type) {
@@ -43,6 +51,12 @@ export default (reduction, action) => {
       return dismissMessage(reduction, action.payload);
     case APP_MESSAGE_REMOVED:
       return removeMessage(reduction, action.payload);
+
+    case CHAT_CHAT_LIST_REQUESTED:
+      return requestChatList(reduction);
+
+    case CHAT_CHAT_LIST_RECEIVED:
+      return insertChatList(reduction, action.payload);
 
     default:
       return reduction;

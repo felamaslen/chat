@@ -13,26 +13,16 @@ export default new Record({
     app: {
       user: null,
       loadedUser: false,
+      loadedChatList: false,
       loadingApp: 2,
       messages: [] // this is for displaying errors / alerts to the user
     },
     chatList: {
-      list: ['她', '他']
+      list: [],
+      selected: -1
     },
     chat: {
       messages: [
-        {
-          uid: 1,
-          name: 'Some Guy',
-          text: 'Hello?',
-          time: 1198179123
-        },
-        {
-          uid: 2,
-          name: 'Some Girl',
-          text: 'Hey! :)',
-          time: 1198179601
-        }
       ]
     }
   }),

@@ -11,3 +11,6 @@ export const APP_LOADED                     = 'APP_LOADED';
 export const APP_LOADING_SPINNER_HIDDEN     = 'APP_LOADING_SPINNER_HIDDEN';
 export const APP_MESSAGE_DISMISSED          = 'APP_MESSAGE_DISMISSED';
 export const APP_MESSAGE_REMOVED            = 'APP_MESSAGE_REMOVED';
+
+export const CHAT_CHAT_LIST_REQUESTED       = 'CHAT_CHAT_LIST_REQUESTED';
+export const CHAT_CHAT_LIST_RECEIVED        = 'CHAT_CHAT_LIST_RECEIVED';

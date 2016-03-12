@@ -12,32 +12,35 @@ import {
 } from '../common';
 
 import {
+  chatListRequested
 } from '../actions/ChatActions';
 
 export default class ChatList extends PureControllerView {
+  componentWillMount() {
+    // we've just logged in, so fetch a list of chats
+    this.dispatchNext(chatListRequested());
+  }
+
   render() {
     let chatList = null;
 
-    // display nothing if we aren't logged in
-    if (this.props.user) {
-      const list = this.props.list.map((item, key) => {
-        return (
-          <li className="chat-list-item" key={key}>
-            {item}
-          </li>
-        );
-      });
-
-      chatList = (
-        <div id="chat-list-outer">
-          <ul className="chat-list">
-            {list}
-          </ul>
-        </div>
+    const list = this.props.list.map((item, key) => {
+      return (
+        <li className="chat-list-item" key={key}>
+          <span className="chat-list-item-name">
+            {item.get('name')}
+          </span>
+        </li>
       );
-    }
+    });
 
-    return chatList;
+    return (
+      <div id="chat-list-outer">
+        <ul className="chat-list">
+          {list}
+        </ul>
+      </div>
+    );
   }
 }
 

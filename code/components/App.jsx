@@ -47,6 +47,32 @@ export default class App extends Component {
   }
 
   render() {
+    let adminBar = null;
+    let chatList = null;
+    let chat = null;
+
+    if (this.state.reduction.getIn(['appState', 'app', 'user'])) {
+      adminBar = (
+        <AdminBar dispatcher={this.state.dispatcher}
+          user={this.state.reduction.getIn(['appState', 'app', 'user'])}
+        />
+      );
+
+      chatList = (
+        <ChatList dispatcher={this.state.dispatcher}
+          list={this.state.reduction.getIn(['appState', 'chatList', 'list'])}
+          user={this.state.reduction.getIn(['appState', 'app', 'user'])}
+        />
+      );
+
+      chat = (
+        <Chat dispatcher={this.state.dispatcher}
+          messages={this.state.reduction.getIn(['appState', 'chat', 'messages'])}
+          user={this.state.reduction.getIn(['appState', 'app', 'user'])}
+        />
+      );
+    }
+
     return (
       <main>
         <Messages dispatcher={this.state.dispatcher}
@@ -54,23 +80,16 @@ export default class App extends Component {
         />
         <LoadingSpinner dispatcher={this.state.dispatcher}
           loadedUser={this.state.reduction.getIn(['appState', 'app', 'loadedUser'])}
+          loadedChatList={this.state.reduction.getIn(['appState', 'app', 'loadedChatList'])}
           loadingApp={this.state.reduction.getIn(['appState', 'app', 'loadingApp'])}
         />
         <UserLoginForm dispatcher={this.state.dispatcher}
           user={this.state.reduction.getIn(['appState', 'app', 'user'])}
           loadedUser={this.state.reduction.getIn(['appState', 'app', 'loadedUser'])}
         />
-        <AdminBar dispatcher={this.state.dispatcher}
-          user={this.state.reduction.getIn(['appState', 'app', 'user'])}
-        />
-        <ChatList dispatcher={this.state.dispatcher}
-          list={this.state.reduction.getIn(['appState', 'chatList', 'list'])}
-          user={this.state.reduction.getIn(['appState', 'app', 'user'])}
-        />
-        <Chat dispatcher={this.state.dispatcher}
-          messages={this.state.reduction.getIn(['appState', 'chat', 'messages'])}
-          user={this.state.reduction.getIn(['appState', 'app', 'user'])}
-        />
+        {adminBar}
+        {chatList}
+        {chat}
       </main>
     );
   }

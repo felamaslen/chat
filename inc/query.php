@@ -3,6 +3,7 @@
 /**
  * @file inc/query.php
  * @depends inc/user.php
+ * @depends inc/chat.php
  * called by inc/bootstrap.php
  * query handler
  */
@@ -17,6 +18,9 @@ function _query_handle_base($query) {
   switch ($option) {
   case 'user':
     user_handle_query($query);
+    break;
+  case 'chat':
+    chat_handle_query($query);
     break;
   default:
     http_quit(400, 'Invalid task given!');

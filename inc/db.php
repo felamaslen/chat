@@ -118,3 +118,5 @@ function db_prefix_tables($sql) {
 // connect to the database
 db_connect();
 
+$db->set_charset('utf8');
+
