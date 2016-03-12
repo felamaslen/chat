@@ -59,20 +59,20 @@ export default class UserLoginForm extends PureControllerView {
           <form onSubmit={this._formSubmitHandler.bind(this)}>
             <div className="input-outer">
               <span className="input-label">Username</span>
-              <input ref="inputUsername" type="text" className={inputUsernameClass}/>
+              <input tabIndex="1" ref="inputUsername" type="text" className={inputUsernameClass}/>
             </div>
             <div className="input-outer">
               <span className="input-label">Password</span>
-              <input ref="inputPassword" type="password" className={inputPasswordClass}/>
+              <input tabIndex="2" ref="inputPassword" type="password" className={inputPasswordClass}/>
             </div>
             <div className="input-outer">
               <div className="input-checkbox-outer">
-                <input ref="inputRememberMe" type="checkbox" className={inputRememberMeClass}
+                <input tabIndex="3" ref="inputRememberMe" type="checkbox" className={inputRememberMeClass}
                   id="input-remember-me"/>
                 <label htmlFor="input-remember-me"/>
                 Remember me
               </div>
-              <input className="button button-login" type="submit" value="Log in"/>
+              <input tabIndex="4" className="button button-login" type="submit" value="Log in"/>
             </div>
           </form>
         </div>
