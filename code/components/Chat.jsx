@@ -36,6 +36,9 @@ export default class Chat extends PureControllerView {
 
     return (
       <div id="chat-outer">
+        <div className="chat-meta">
+          <span className="chat-name">{this.props.name}</span>
+        </div>
         <ul className="chat-messages">
           {messages}
         </ul>
@@ -46,6 +49,7 @@ export default class Chat extends PureControllerView {
 
 Chat.propTypes = {
   messages: PropTypes.instanceOf(List),
+  name:     PropTypes.string,
   user:     PropTypes.instanceOf(Map)
 };
 

@@ -13,10 +13,15 @@ import {
 } from '../config';
 
 import {
-  chatListRequested
+  chatListRequested,
+  personActivated
 } from '../actions/ChatActions';
 
 export default class ChatList extends PureControllerView {
+  _activatePerson(key) {
+    this.dispatchAction(personActivated(key));
+  }
+
   componentWillMount() {
     // we've just logged in, so fetch a list of chats
     this.dispatchNext(chatListRequested());
@@ -34,8 +39,13 @@ export default class ChatList extends PureControllerView {
         </span>
       );
 
+      const chatListItemClass = classNames({
+        'chat-list-item': true,
+        selected:         key === this.props.selectedKey
+      });
+
       return (
-        <li className="chat-list-item" key={key}>
+        <li onClick={this._activatePerson.bind(this, key)} className={chatListItemClass} key={key}>
           {picture}
           <span className="chat-list-item-name">
             {item.get('name')}
@@ -55,7 +65,8 @@ export default class ChatList extends PureControllerView {
 }
 
 ChatList.propTypes = {
-  list: PropTypes.instanceOf(List),
-  user:     PropTypes.instanceOf(Map)
+  list:         PropTypes.instanceOf(List),
+  selectedKey:  PropTypes.number,
+  user:         PropTypes.instanceOf(Map)
 };
 

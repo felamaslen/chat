@@ -14,7 +14,11 @@ import {
   APP_MESSAGE_REMOVED,
 
   CHAT_CHAT_LIST_REQUESTED,
-  CHAT_CHAT_LIST_RECEIVED
+  CHAT_CHAT_LIST_RECEIVED,
+  CHAT_PERSON_ACTIVATED,
+  CHAT_CHAT_RECEIVED,
+  CHAT_MESSAGE_SENT,
+  CHAT_MESSAGE_SEND_ACCEPTED
 } from '../constants/actions';
 
 import {
@@ -30,7 +34,11 @@ import {
 
 import {
   requestChatList,
-  insertChatList
+  insertChatList,
+  requestChat,
+  chatReceived,
+  chatSendMessage,
+  chatSendMessageDone
 } from './ChatReducer';
 
 export default (reduction, action) => {
@@ -54,9 +62,16 @@ export default (reduction, action) => {
 
     case CHAT_CHAT_LIST_REQUESTED:
       return requestChatList(reduction);
-
     case CHAT_CHAT_LIST_RECEIVED:
       return insertChatList(reduction, action.payload);
+    case CHAT_PERSON_ACTIVATED:
+      return requestChat(reduction, action.payload);
+    case CHAT_CHAT_RECEIVED:
+      return chatReceived(reduction, action.payload);
+    case CHAT_MESSAGE_SENT:
+      return chatSendMessage(reduction, action.payload);
+    case CHAT_MESSAGE_SEND_ACCEPTED:
+      return chatSendMessageDone(reduction, action.payload);
 
     default:
       return reduction;

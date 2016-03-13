@@ -61,6 +61,7 @@ export default class App extends Component {
       chatList = (
         <ChatList dispatcher={this.state.dispatcher}
           list={this.state.reduction.getIn(['appState', 'chatList', 'list'])}
+          selectedKey={this.state.reduction.getIn(['appState', 'chatList', 'selectedKey'])}
           user={this.state.reduction.getIn(['appState', 'app', 'user'])}
         />
       );
@@ -68,6 +69,7 @@ export default class App extends Component {
       chat = (
         <Chat dispatcher={this.state.dispatcher}
           messages={this.state.reduction.getIn(['appState', 'chat', 'messages'])}
+          name={this.state.reduction.getIn(['appState', 'chat', 'name'])}
           user={this.state.reduction.getIn(['appState', 'app', 'user'])}
         />
       );

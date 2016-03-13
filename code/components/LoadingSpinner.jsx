@@ -9,7 +9,8 @@ import classNames from 'classnames';
 import PureControllerView from './PureControllerView';
 
 import {
-  SPINNER_FADE_TIME
+  SPINNER_FADE_TIME,
+  SPINNER_WAIT_EXTRA_TIME
 } from '../config';
 
 import {
@@ -33,7 +34,7 @@ export default class LoadingSpinner extends PureControllerView {
         window.setTimeout(() => {
           this.dispatchAction(appLoaded());
         }, SPINNER_FADE_TIME);
-      }, 500);
+      }, SPINNER_WAIT_EXTRA_TIME);
     }
   }
 

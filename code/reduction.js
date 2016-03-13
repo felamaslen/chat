@@ -19,11 +19,11 @@ export default new Record({
     },
     chatList: {
       list: [],
-      selected: -1
+      selectedKey: null
     },
     chat: {
-      messages: [
-      ]
+      name: null, // (nick)name of the person we are chatting with
+      messages: []
     }
   }),
   effects: List.of()

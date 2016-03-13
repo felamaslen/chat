@@ -6,6 +6,7 @@
 export const API_BASE_URL = '/api/';
 
 export const SPINNER_FADE_TIME = 550;
+export const SPINNER_WAIT_EXTRA_TIME = 0;
 
 export const MESSAGE_TIMEOUT = 3000;
 export const MESSAGE_FADE_TIME = 550;

@@ -17,7 +17,8 @@ import {
   API_LOGIN_REQUEST,
   API_LOGOUT_REQUEST,
   API_USER_STATUS,
-  API_CHAT_LIST_REQUEST
+  API_CHAT_LIST_REQUEST,
+  API_CHAT_REQUEST
 } from '../constants/effects';
 
 import {
@@ -25,7 +26,8 @@ import {
 } from '../actions/AppActions';
 
 import {
-  chatListReceived
+  chatListReceived,
+  chatReceived
 } from '../actions/ChatActions';
 
 import axios from 'axios';
@@ -69,6 +71,14 @@ export default buildEffectHandler({
       response => dispatcher.dispatch(chatListReceived(response))
     ).catch(
       () => dispatcher.dispatch(chatListReceived(null))
+    );
+  },
+
+  [API_CHAT_REQUEST]: (uid, dispatcher) => {
+    axios.get('chat/uid/' + uid.toString()).then(
+      response => dispatcher.dispatch(chatReceived(response))
+    ).catch(
+      () => dispatcher.dispatch(chatReceived(null))
     );
   }
 });

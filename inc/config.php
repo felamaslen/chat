@@ -22,3 +22,5 @@ $db_info = array(
 
 define('REMEMBERME_TIME', 30); // days
 
+define('NUM_MESSAGES_PRELOAD', 50);
+
